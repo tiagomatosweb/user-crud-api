@@ -6,6 +6,7 @@ use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
@@ -46,8 +47,21 @@ class UserController extends Controller
         return new UserResource($user);
     }
 
+    /**
+     * @param User $user
+     * @return UserResource
+     */
     public function show(User $user)
     {
         return new UserResource($user);
+    }
+
+    /**
+     * @param User $user
+     * @throws Exception
+     */
+    public function destroy(User $user)
+    {
+        $user->delete();
     }
 }
