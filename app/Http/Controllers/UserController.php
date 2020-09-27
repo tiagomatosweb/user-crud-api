@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserCreated;
+use App\Events\UserDeleted;
+use App\Events\UserUpdated;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Exception;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class UserController extends Controller
@@ -30,6 +32,8 @@ class UserController extends Controller
         $input = $request->validated();
         $user = User::create($input);
 
+        event(new UserCreated($user));
+
         return new UserResource($user);
     }
 
@@ -43,6 +47,8 @@ class UserController extends Controller
         $input = $request->validated();
         $user = $user->fill($input);
         $user->save();
+
+        event(new UserUpdated($user));
 
         return new UserResource($user);
     }
@@ -63,5 +69,7 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
+
+        event(new UserDeleted($user));
     }
 }
