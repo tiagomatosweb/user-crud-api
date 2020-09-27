@@ -11,9 +11,7 @@ class UserTest extends TestCase
 {
     use WithFaker;
     /**
-     * A basic feature test example.
      * @test
-     * @return void
      */
     public function confirm_user_was_created()
     {
